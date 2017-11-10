@@ -91,7 +91,12 @@ public class TrustyUtils {
     
     public static byte[] sign(byte[] data, PrivateKey privateKey) throws SignatureException {
         try {
-            Signature signature = Signature.getInstance(privateKey.getAlgorithm());
+            Signature signature;
+            if (privateKey.getAlgorithm().equals("RSA")) {
+                signature = Signature.getInstance("SHA256withRSA");
+            } else {
+                signature = Signature.getInstance(privateKey.getAlgorithm());
+            }
             
             signature.initSign(privateKey);
             signature.update(data);
